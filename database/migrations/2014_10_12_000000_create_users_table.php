@@ -1,0 +1,40 @@
+<?php
+
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('phone');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamps();
+        });
+
+        User::create([
+            'first_name' => 'testing',
+            'last_name' => 'testing',
+            'phone' => '9900000000',
+            'email' => 'testing@gmail.com',
+            'email_verified_at' => Carbon::now()->toDateTimeString(),
+            'password' => Hash::make('oneplus10t'),
+        ]);
+    }
+};
