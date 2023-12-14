@@ -1,5 +1,5 @@
-1. Add dealer/supplier have issue with non required fields
-2. Block user to add product if SKU already present.
+//1. Add dealer/supplier have issue with non required fields
+//2. Block user to add product if SKU already present.
 3. Manage product search only working with SKU, it should work with all types.
 4. Pdf on manage product include which product is been search, and include searched product in the pdf.
 5. Manage product add sorting on stone name, sku already have it.

@@ -25,6 +25,7 @@
                         type="text"
                         :class="{'form-control': true, 'has-error': v$.form_data.sku.$error}"
                         placeholder="UPC/SKU"
+                        @input="productSearch"
                       >
                     </div>
                     <div class="col-12 col-md-4 mb-2 pe-2">
@@ -237,6 +238,23 @@ export default {
 		}
 	},
 	methods: {
+		productSearch() {
+			clearTimeout(this.debounce2);
+			this.debounce2 = setTimeout(() => {
+				this.getProductBySKU();
+			}, 1400);
+		},
+		getProductBySKU() {
+			this.$axios.post('/api/product-by-sku', {
+				search: this.form_data.sku,
+			}).then(resp => {
+				let product = resp.data.product;
+				if (product) {
+					alert('Product found with same sku');
+					this.form_data.sku = null;
+				}
+			});
+		},
 		async handleAddProduct() {
 			const result = await this.v$.$validate();
 			if (result) {
