@@ -350,7 +350,7 @@ class InventoryController extends Controller
      */
     public function getOutwardEntryList(Request $request)
     {
-        $outward_entries = OutwardEntry::orderBy('id')->with('outwardEntryItem')->get();
+        $outward_entries = OutwardEntry::with(['outwardEntryItem'])->orderBy('id')->get();
         if (! empty($request->searchBy)) {
             $outward_entries = OutwardEntry::with(['outward_entry_items'])
                 ->where('dealer_name', 'LIKE', '%'.$request->searchBy.'%')
