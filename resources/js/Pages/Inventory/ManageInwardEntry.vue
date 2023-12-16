@@ -64,11 +64,11 @@
               <span v-if="slotProps.column.field === 'total' && slotProps.row.inward_entry_item">
                 {{ slotProps.row.inward_entry_item.length }}
               </span>
-              <span v-if="slotProps.column.field === 'sku' && slotProps.row.inward_entry_item">
-                {{ slotProps.row.inward_entry_item[0].sku }}
+              <span v-if="slotProps.row.inward_entry_item.length && slotProps.column.field === 'sku' && slotProps.row.inward_entry_item">
+                {{ slotProps.row.inward_entry_item.map(i => i.sku) }}
               </span>
-              <span v-if="slotProps.column.field === 'stone_name' && slotProps.row.inward_entry_item">
-                {{ slotProps.row.inward_entry_item[0].stone_name }}
+              <span v-if="slotProps.row.inward_entry_item.length && slotProps.column.field === 'stone_name' && slotProps.row.inward_entry_item">
+                {{ slotProps.row.inward_entry_item.map(i => i.stone_name) }}
               </span>
               <span v-else>{{ slotProps.row[slotProps.column.field] }}</span>
             </template>
