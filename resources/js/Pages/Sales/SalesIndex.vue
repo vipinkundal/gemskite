@@ -119,6 +119,14 @@ export default {
 					label: 'Product SKU',
 					field: 'sku'
 				},
+				{
+					label: 'Date',
+					field: 'date'
+				},
+				{
+					label: 'Product SKU',
+					field: 'sku'
+				},
 			],
 		};
 	},
