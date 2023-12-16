@@ -105,6 +105,14 @@ export default {
 					label: 'Firm Name',
 					field: 'firm-name'
 				},
+				{
+					label: 'Date',
+					field: 'date'
+				},
+				{
+					label: 'Product SKU',
+					field: 'sku'
+				},
 			],
 		};
 	},

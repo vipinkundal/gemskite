@@ -35,7 +35,7 @@ class ProductController extends Controller
     {
         $products = Products::orderBy('id')->get();
         if (! empty($request->searchBy)) {
-            $products = Products::orderBy('id')->where('sku', 'LIKE', '%'.$request->searchBy.'%')
+            $products = Products::orderBy('id')->where($request->type ?? 'sku', 'LIKE', '%'.$request->searchBy.'%')
                 ->orderBy('id')->get();
         }
 

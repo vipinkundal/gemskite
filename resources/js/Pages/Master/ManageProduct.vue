@@ -186,7 +186,8 @@ export default {
 			this.getProduct();
 		},
 		getProduct() {
-			this.$axios.get('/api/master/get-product-list?searchBy='+this.uSearchBy).then(resp => {
+			let type = this.productColumns.find(i => i.label === this.productType)?.field;
+			this.$axios.get('/api/master/get-product-list?searchBy='+this.uSearchBy+'&type='+type).then(resp => {
 				this.getProductList = resp.data.success.products;
 			});
 		},
