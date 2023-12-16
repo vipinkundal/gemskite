@@ -7,14 +7,14 @@
       </h1>
     </div>
     <div class="mb-3 float-end">
-      <Link
+      <!-- <Link
         class="sidebar-link"
         href="/sales/create"
       >
         <i
           class="align-middle"
         /> <span class="align-middle">Create</span>
-      </Link>
+      </Link> -->
     </div>
     <div class="row">
       <div class="col-md-4 col-12">
@@ -25,13 +25,13 @@
             placeholder="Search sales by Name"
             type="text"
             class="form-control bg-white  border-radius-0"
-            @keyup.enter="getDealers"
+            @keyup.enter="getSales"
           >
           <span
             id="search"
             role="button"
             class="input-group-text border-radius-0 btn-primary"
-            @click="getDealers"
+            @click="getSales"
           >Search By date
           </span>
         </div>
@@ -50,15 +50,20 @@
           <vue-table-component
             :key="Math.random()"
             :columns="Columns"
-            :rows="getdealerList"
+            :rows="getSalesList"
             :sort-by-api="false"
           >
             <template
               #table-row="slotProps"
             >
+              <span v-if="slotProps.column.field==='sku'">
+                <div
+                  v-if="slotProps.row.outward_entry_item.length"
+                  class="d-flex"
+                > {{ slotProps.row.outward_entry_item.map(i => i.sku) }} </div>
+              </span>
               <span v-if="slotProps.column.field==='actions'">
                 <div class="d-flex">
-
                   <button
                     type="button"
                     class="btn btn-primary me-2"
@@ -94,16 +99,17 @@ export default {
 	props:['dealers'],
 	data() {
 		return {
-			getdealerList: [],
+			getDealerList: [],
+			getSalesList: [],
 			uSearchBy: '',
 			Columns:[
 				{
-					label: 'Name',
-					field: 'name'
+					label: 'Dealer Name',
+					field: 'dealer_name'
 				},
 				{
 					label: 'Firm Name',
-					field: 'firm-name'
+					field: 'firm_name'
 				},
 				{
 					label: 'Date',
@@ -117,16 +123,23 @@ export default {
 		};
 	},
 	mounted(){
+		this.getSales();
 		this.getDealers();
 	},
 	methods: {
 		clearFitler() {
 			this.uSearchBy='';
+			this.getSales();
 			this.getDealers();
+		},
+		getSales() {
+			this.$axios.get('/api/get-outward-entry-list?searchBy='+this.uSearchBy).then(resp => {
+				this.getSalesList = resp.data.success.outward_entries;
+			});
 		},
 		getDealers() {
 			this.$axios.get('/api/master/get-dealer-list?searchBy='+this.uSearchBy).then(resp => {
-				this.getdealerList = resp.data.success.dealer;
+				this.getDealerList = resp.data.success.dealer;
 			});
 		},
 		editdealer(each) {
@@ -136,7 +149,7 @@ export default {
 			this.swalConfirmDelete().then((result) => {
 				if (result.isConfirmed) {
 					this.$axios.delete('/api/master/delete/dealer/'+ each.id).then(resp => {
-						this.getdealerList = resp.data.success.dealer;
+						this.getDealerList = resp.data.success.dealer;
 					});
 					this.swalDeleted();
 				}
