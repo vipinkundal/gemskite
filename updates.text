@@ -2,7 +2,7 @@
 //2. Block user to add product if SKU already present.
 //3. Manage product search only working with SKU, it should work with all types.
 4. Pdf on manage product include which product is been search, and include searched product in the pdf.
-5. Manage product add sorting on stone name, sku already have it.
+//5. Manage product add sorting on stone name, sku already have it.
 6. Manage sales - dealer date, product name/sku
 7. Manage inward or outward in sidebar take some time on click, need to reload a page.
 8. Admin can do anything, other user can't delete it
