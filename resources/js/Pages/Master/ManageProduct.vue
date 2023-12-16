@@ -122,7 +122,6 @@ export default {
 				{
 					label: 'Stone Name',
 					field: 'stone_name',
-					sorting: false
 				},
 				{
 					label: 'Shape',
@@ -137,7 +136,6 @@ export default {
 				{
 					label: 'Piece',
 					field: 'piece',
-					sorting: false
 				},
 				{
 					label: 'Gross Weight',
@@ -162,7 +160,6 @@ export default {
 				{
 					label: 'Price',
 					field: 'price',
-					sorting: false
 				},
 				{
 					label: 'Color',
