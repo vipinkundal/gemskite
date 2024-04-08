@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Products;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ProductController extends Controller
 {
@@ -103,5 +104,21 @@ class ProductController extends Controller
         }
 
         return redirect('master/add-product')->with('success', 'Product added');
+    }
+    public function viewProductInvoice(int $id) {
+        // dd($id);
+        $order = Products::find($id);
+        // echo "<pre>";
+        // print_r($order);
+        // echo "</pre>";
+        // die;
+        return view("invoice.generate-product-invoice",compact('order'));
+    }
+    public function generateProductInvoice($id) {
+        $order = Products::find($id);
+        $pdf = PDF::loadView('invoice.generate-dealer-invoice', compact('order'));
+
+    // Return the PDF as a download
+    return $pdf->download('invoice'.$order->id.'.pdf');
     }
 }

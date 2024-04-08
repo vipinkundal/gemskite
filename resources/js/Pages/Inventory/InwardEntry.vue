@@ -132,13 +132,6 @@
                 Submit
               </button>
             </div>
-            <button
-              class="btn btn-secondary pe-3 ms-3"
-              type="button"
-              @click="generateInvoice"
-            >
-              Generate Invoice
-            </button>
           </div>
         </div>
       </div>
@@ -170,8 +163,8 @@ export default {
 	created() {
 		if (this.inwardEntry && this.inwardEntry.id) {
 			this.inwardEntries = this.inwardEntry.inward_entry_item;
-			this.inbound_date = this.inwardEntry.inbound_date;
-			this.import_invoice_number = this.inwardEntry.import_invoice_number;
+			this.inbound_date = this.inwardEntry.date;
+			this.import_invoice_number = this.inwardEntry.invoice_number;
 			this.supplier = this.inwardEntry.supplier;
 			this.location = this.inwardEntry.location;
 		}

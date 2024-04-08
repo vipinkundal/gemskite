@@ -13,6 +13,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class InventoryController extends Controller
 {
@@ -397,4 +398,40 @@ class InventoryController extends Controller
 
         return redirect('inventory/manage-outward-entry');
     }
+
+
+
+
+    public function viewInwardInvoice(int $id) {
+        // dd($id);
+        $order = InwardEntry::find($id);
+        // echo "<pre>";
+        // print_r($data);
+        // echo "</pre>";
+        // die;
+        return view("invoice.generate-inward-invoice",compact('order'));
+    }
+    public function generateInwardInvoice($id) {
+        $order = InwardEntry::find($id);
+        $data = ['order'=> $order];
+        $pdf = Pdf::loadView('invoice.generate-inward-invoice', $data);
+        return $pdf->download('invoice.pdf');
+    }
+    public function viewOutwardInvoice(int $id) {
+        // dd($id);
+        $order = OutwardEntry::find($id);
+        // echo "<pre>";
+        // print_r($order);
+        // echo "</pre>";
+        // die;
+        return view("invoice.generate-outward-invoice",compact('order'));
+    }
+    public function generateOutwardInvoice($id) {
+        $order = OutwardEntry::find($id);
+        $pdf = PDF::loadView('invoice.generate-dealer-invoice', compact('order'));
+
+    // Return the PDF as a download
+    return $pdf->download('invoice'.$order->id.'.pdf');
+    }
+
 }

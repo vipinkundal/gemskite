@@ -81,6 +81,19 @@
                 </div>
               </span>
               <span v-else>{{ slotProps.row[slotProps.column.field] }}</span>
+
+              {{ console.log(slotProps.column) }}
+              <span v-if="slotProps.column.field === 'invoices'">
+                <div class="d-flex">
+                  <button type="button" class="btn bg-warning me-2" @click="viewInvoice(slotProps.row)">
+                    <vue-feather type="eye" />
+                  </button>
+                  <button type="button" class="btn btn-danger" @click="generateInvoice(slotProps.row)">
+                    <vue-feather type="file-text" />
+                  </button>
+
+                </div>
+              </span>
             </template>
           </vue-table-component>
         </div>
@@ -112,20 +125,16 @@ export default {
 					field: 'firm_name'
 				},
 				{
-					label: 'Date',
+					label: 'Created At',
 					field: 'date'
 				},
 				{
-					label: 'Product SKU',
-					field: 'sku'
-				},
-				{
-					label: 'Date',
+					label: 'Updated At',
 					field: 'date'
 				},
 				{
-					label: 'Product SKU',
-					field: 'sku'
+					label: 'Invoice',
+					field: 'invoices'
 				},
 			],
 		};
@@ -162,7 +171,22 @@ export default {
 					this.swalDeleted();
 				}
 			});
-		}
+		},
+    viewInvoice(row) {
+      window.open(`/sales/invoice/${row.id}`, '_blank');
+    },
+
+    // Method to generate an invoice
+    generateInvoice(row) {
+      this.url = `/sales/invoice/${row.id}/generate`;
+      const anchor = document.createElement('a');
+      anchor.style.display = 'none';
+      anchor.href = this.url;
+      anchor.download = 'invoice.pdf'; // Set the filename for the download
+      document.body.appendChild(anchor);
+      anchor.click(); // Trigger the download
+      document.body.removeChild(anchor); 
+    },
 	}
 };
 

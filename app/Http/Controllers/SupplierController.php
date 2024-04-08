@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Barryvdh\DomPDF\Facade\PDF;
 
 class SupplierController extends Controller
 {
@@ -101,4 +102,23 @@ class SupplierController extends Controller
             'supplier' => $supplier,
         ]]);
     }
+    public function viewSupplierInvoice(int $id) {
+        // dd($id);
+        $order = Supplier::find($id);
+        // echo "<pre>";
+        // print_r($order);
+        // echo "</pre>";
+        // die;
+        return view("invoice.generate-dealer-invoice",compact('order'));
+    }
+    public function generateSupplierInvoice($id)
+{
+    $order = Supplier::find($id);
+    $pdf = PDF::loadView('invoice.generate-dealer-invoice', compact('order'));
+
+    // Return the PDF as a download
+    return $pdf->download('invoice'.$order->id.'.pdf');
+}
+
+    
 }
