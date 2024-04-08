@@ -90,6 +90,17 @@
               <span v-else>
                 {{ slotProps.row[slotProps.column.field] }}
               </span>
+              <span v-if="slotProps.column.field === 'invoices'">
+                <div class="d-flex">
+                  <button type="button" class="btn bg-warning me-2" @click="viewInvoice(slotProps.row)">
+                    <vue-feather type="eye" />
+                  </button>
+                  <button type="button" class="btn btn-danger" @click="generateInvoice(slotProps.row)">
+                    <vue-feather type="file-text" />
+                  </button>
+
+                </div>
+              </span>
             </template>
             <template #emptystate>
               <p>{{ 'No product found' }}</p>
@@ -171,6 +182,11 @@ export default {
 					field: 'actions',
 					sorting: false
 				},
+				{
+					label: 'Invoice',
+					field: 'invoices',
+					sorting: false
+				},
 			],
 		};
 	},
@@ -202,9 +218,25 @@ export default {
 					this.swalDeleted();
 				}
 			});
-		}
+		},
+    viewInvoice(row) {
+      window.open(`/master/product/invoice/${row.id}`, '_blank');
+    },
+
+    // Method to generate an invoice
+    generateInvoice(row) {
+      this.url = `/master/product/invoice/${row.id}/generate`;
+      const anchor = document.createElement('a');
+      anchor.style.display = 'none';
+      anchor.href = this.url;
+      anchor.download = 'invoice.pdf'; // Set the filename for the download
+      document.body.appendChild(anchor);
+      anchor.click(); // Trigger the download
+      document.body.removeChild(anchor); // Clean up the anchor element
+}
+    },
 	}
-};
+
 
 </script>
 <style>

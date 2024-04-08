@@ -15,6 +15,9 @@
         <!-- Scripts -->
         @routes
         <script src="{{ mix('js/app.js') }}" defer></script>
+
+        <script type="text/javascript" src="/js/print.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="/css/print.min.css">
     </head>
     <body class="font-sans antialiased">
         @inertia

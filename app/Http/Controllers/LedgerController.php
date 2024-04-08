@@ -6,6 +6,7 @@ use App\Models\Ledger;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class LedgerController extends Controller
 {
@@ -38,7 +39,8 @@ class LedgerController extends Controller
      */
     public function deleteLedger(Ledger $ledger, Request $request)
     {
-        $ledger->softDelete();
+        // $ledger->softDelete();
+        $ledger->delete();
         $ledgers = Ledger::orderBy('id')->get();
 
         return response()->json(['success' => [
@@ -51,8 +53,14 @@ class LedgerController extends Controller
      */
     public function createOrUpdateLedger(Request $request)
     {
-        $date_time = Carbon::createFromFormat('Y-m-d\TH:i:s.v\Z', $request->date);
-        $date_time->setTimezone('Asia/Kolkata');
+        $date_time = null;
+        $isFormatted = Carbon::hasFormat($request->date, 'Y-m-d\TH:i:s.v\Z');
+        if ($isFormatted) {
+            $date_time = Carbon::createFromFormat('Y-m-d\TH:i:s.v\Z', $request->date);
+        } else {
+            $date_time = $request->date;
+        }
+
         if ($request->edit && $request->id) {
             Ledger::where('id', $request->id)->update([
                 'name' => $request->name,
@@ -80,6 +88,7 @@ class LedgerController extends Controller
         return redirect('ledger/index')->with('success', 'Ledger added!');
     }
 
+
     /**
      * Show product list page
      */
@@ -95,5 +104,22 @@ class LedgerController extends Controller
         return response()->json(['success' => [
             'ledger' => $ledger,
         ]]);
+    }
+
+    public function viewLedgerInvoice(int $id) {
+        // dd($id);
+        $order = Ledger::find($id);
+        // echo "<pre>";
+        // print_r($order);
+        // echo "</pre>";
+        // die;
+        return view("invoice.generate-ledger-invoice",compact('order'));
+    }
+    public function generateLedgerInvoice($id) {
+        $order = Ledger::find($id);
+        $pdf = PDF::loadView('invoice.generate-ledger-invoice', compact('order'));
+
+        // Return the PDF as a download
+        return $pdf->download('invoice'.$order->id.'.pdf');
     }
 }

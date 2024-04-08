@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Spatie\SimpleExcel\SimpleExcelWriter;
+use PDF;
 
 class ReportController extends Controller
 {
@@ -600,5 +601,38 @@ class ReportController extends Controller
     }
 
 
+    /**
+     * Generate Invoice PDFReport
+     *
+     * @param Request $request
+     * @param string|integer $id
+     * @return PDF
+     */
+    public function generateInvoice(Request $request)
+    {
+        $dataEntry = OutwardEntry::findOrFail($request->id);
+        \Log::info($dataEntry);
+        try{
+            view()->share([
+                'date' => $dataEntry->date,
+                "voucher_number" => $dataEntry->voucher_number,
+                'dealer_name' => $dataEntry->dealer_name,
+                'firm_name' => $dataEntry->firm_name,
+                'city' => $dataEntry->city,
+                'phone' => $dataEntry->phone,
+                'created_at' => $dataEntry->created_at,
+                'updated_at' => $dataEntry->updated_at,
+            ]);
+
+            $pdf = PDF::loadView('pdf.invoice');
+
+            return $pdf->stream();
+        }catch(Exception $e) {
+            dd($e);
+        }
+
+
+
+    }
 
 }

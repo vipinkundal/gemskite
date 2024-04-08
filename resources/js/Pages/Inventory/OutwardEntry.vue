@@ -174,13 +174,6 @@
               >
                 Submit
               </button>
-              <button
-                class="btn btn-secondary pe-3 ms-3"
-                type="button"
-                @click="generateInvoice"
-              >
-                Generate Invoice
-              </button>
             </div>
           </div>
         </div>
@@ -217,8 +210,9 @@ export default {
 	},
 	created() {
 		if (this.outwardEntry && this.outwardEntry.id) {
+      console.log(this.outwardEntry)
 			this.outwardEntries = this.outwardEntry.outward_entry_item;
-			this.outbound_date = this.$moment(this.outwardEntry.outbound_date, 'YYYY-MM-DD');
+			this.outbound_date = this.$moment(this.outwardEntry.date, 'YYYY-MM-DD');
 			this.voucher_number = this.outwardEntry.voucher_number;
 			this.dealer_name = this.outwardEntry.dealer_name;
 			this.firm_name = this.outwardEntry.firm_name;
@@ -332,7 +326,26 @@ export default {
 			this.firm_name = this.dealerList.find(i => i.name === this.dealer_name).firm_name;
 			this.city = this.dealerList.find(i => i.name === this.dealer_name).city;
 			this.phone = this.dealerList.find(i => i.name === this.dealer_name).phone;
-		}
+		},
+        generateInvoice() {
+        this.$axios.post('/report/get-invoice', {
+            id: this.outwardEntry ? this.outwardEntry.id : 0,
+        }).then(response => {
+            let url = response.config.url;
+            console.log(url)
+            printJS({
+                printable: url,
+                type: 'pdf',
+                onPrintDialogClose: () => {
+                    this.reset();
+                }
+            });
+        }).catch(error => {
+            console.error('Error generating invoice:', error);
+        });
+    }
+
+
 	}
 };
 

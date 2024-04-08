@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Dealer;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class DealerController extends Controller
 {
@@ -97,5 +98,22 @@ class DealerController extends Controller
         return response()->json(['success' => [
             'dealer' => $dealer,
         ]]);
+    }
+
+    public function viewDealerInvoice(int $id) {
+        // dd($id);
+        $order = Dealer::find($id);
+        // echo "<pre>";
+        // print_r($order);
+        // echo "</pre>";
+        // die;
+        return view("invoice.generate-dealer-invoice",compact('order'));
+    }
+    public function generateDealerInvoice($id) {
+        $order = Dealer::find($id);
+        $pdf = PDF::loadView('invoice.generate-dealer-invoice', compact('order'));
+
+    // Return the PDF as a download
+    return $pdf->download('invoice'.$order->id.'.pdf');
     }
 }
