@@ -136,7 +136,7 @@
 
     <br>
     <p class="text-center">
-        Thank your for shopping with xyz
+        Thank your for shopping with Gemskite.
     </p>
 
 </div>
