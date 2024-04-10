@@ -252,6 +252,20 @@
             /> <span class="align-middle">Ledger (PDF)</span>
           </Link>
         </li>
+        <li class="sidebar-header">
+          Trashes
+        </li>
+        <li class="sidebar-item">
+          <Link
+            class="sidebar-link"
+            href="/manage/trashes"
+          >
+            <i
+              class="align-middle"
+              data-feather="file-text"
+            /> <span class="align-middle">All Trashes</span>
+          </Link>
+        </li>
       </ul>
     </div>
   </nav>

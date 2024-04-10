@@ -9,6 +9,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TrashController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 
@@ -102,6 +103,19 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
 
 
+    Route::group(['prefix'=>'/manage'], function() {
+        Route::get('/trashes', [TrashController::class, 'manageTrsh']);
+        Route::get('/trashes/outwardEntry/restore/{id}', [TrashController::class, 'outwardEntryRestore']);
+        Route::get('/trashes/inwardEntry/restore/{id}', [TrashController::class, 'inwardEntryRestore']);
+        Route::get('/trashes/supplier/restore/{id}', [TrashController::class, 'supplierRestore']);
+        Route::get('/trashes/dealer/restore/{id}', [TrashController::class, 'dealerRestore']);
+        Route::get('/trashes/product/restore/{id}', [TrashController::class, 'productRestore']);
+        Route::get('/trashes/outwardEntry/delete/{id}', [TrashController::class, 'outwardEntryPermanentDelete']);
+        Route::get('/trashes/inwardEntry/delete/{id}', [TrashController::class, 'inwardEntryPermanentDelete']);
+        Route::get('/trashes/supplier/delete/{id}', [TrashController::class, 'supplierPermanentDelete']);
+        Route::get('/trashes/dealer/delete/{id}', [TrashController::class, 'dealerPermanentDelete']);
+        Route::get('/trashes/product/delete/{id}', [TrashController::class, 'productPermanentDelete']);
+    });
 
 });
 
